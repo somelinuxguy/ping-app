@@ -3,11 +3,12 @@ FROM ubuntu:20.04
  
 # Update Software repository
 WORKDIR /opt/api
-RUN apt-get -y update 
-RUN apt-get -y upgrade
-RUN apt-get -y install nodejs npm git
-RUN git clone https://github.com/somelinuxguy/ping.git .
+RUN apt-get update \
+&& apt-get install -y nodejs npm git \
+&& rm -rf /var/lib/apt/lists/*
+COPY . /opt/api/
 RUN npm install
+
 
 # Expose ports because reasons.
 # Reminder - K8s overrides this.
