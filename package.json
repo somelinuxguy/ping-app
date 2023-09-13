@@ -1,0 +1,25 @@
+{
+  "name": "ping-app",
+  "version": "1.0.0",
+  "description": "The machine that goes PING",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somelinuxguy/ping-app.git"
+  },
+  "author": "Nathan Reese",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/somelinuxguy/ping-app/issues"
+  },
+  "homepage": "https://github.com/somelinuxguy/ping-app",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "request": "^2.88.2"
+  }
+}
