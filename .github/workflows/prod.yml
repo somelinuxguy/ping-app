@@ -26,7 +26,7 @@ jobs:
         with:
           method: jwt
           path: ${{ vars.VAULT_AUTH_PATH }}
-          url: ${{ vars.VAULT_ADDR_PUB }}
+          url: ${{ vars.VAULT_ADDR }}
           namespace: ${{ vars.VAULT_NAMESPACE }}
           role: ${{ vars.VAULT_ROLE }}
           secrets: |
