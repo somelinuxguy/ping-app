@@ -29,8 +29,8 @@ jobs:
           namespace: ${{ vars.VAULT_NAMESPACE }}
           role: ${{ vars.VAULT_ROLE }}
           secrets: |
-            ping/dev AWS_ACCESS_KEY_ID     | AWS_ACCESS_KEY_ID ;
-            ping/dev AWS_SECRET_ACCESS_KEY | AWS_SECRET_ACCESS_KEY ;
+            ping/data/dev AWS_ACCESS_KEY_ID     | AWS_ACCESS_KEY_ID ;
+            ping/data/dev AWS_SECRET_ACCESS_KEY | AWS_SECRET_ACCESS_KEY ;
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
