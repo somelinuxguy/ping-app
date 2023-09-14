@@ -4,8 +4,8 @@
   "description": "The machine that goes PING",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "mocha tests/test.js",
+    "start": "SET NODE_ENV=dev && node server.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,11 @@
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.8",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

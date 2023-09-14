@@ -17,3 +17,5 @@ const server = app.listen(port, (error) => {
 
     console.log('The server is up and running... Awaiting connection');
 });
+
+module.exports = server; // Export the app for testing
