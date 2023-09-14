@@ -1,0 +1,55 @@
+name: ProductionBuild
+run-name: A Deploy by @${{ github.actor }}
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          method: jwt
+          path: ${{ vars.VAULT_AUTH_PATH }}
+          url: ${{ vars.VAULT_ADDR_PUB }}
+          namespace: ${{ vars.VAULT_NAMESPACE }}
+          role: ${{ vars.VAULT_ROLE }}
+          secrets: |
+            ping/dev AWS_ACCESS_KEY_ID     | AWS_ACCESS_KEY_ID ;
+            ping/dev AWS_SECRET_ACCESS_KEY | AWS_SECRET_ACCESS_KEY ;
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ steps.secrets.outputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.secrets.outputs.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+# Run Tests Here
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build & Push Docker image to ECR
+        env:
+          REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          REPOSITORY: ping
+          TAG: ${{github.sha}}
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.TAG }} -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest .
+          docker image push --all-tags ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
