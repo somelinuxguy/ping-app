@@ -1,7 +1,7 @@
 # Testing locally?
 # Here's a cheat sheet to help you!
 # docker buildx build --platform=linux/amd64 -t "12345.dkr.ecr.us-east-1.amazonaws.com/composer:latest" .
-# aws ecr get-login-password --region us-east-1  --profile chord-dev |docker login --username AWS --password-stdin 12345.dkr.ecr.us-east-1.amazonaws.com/composer
+# aws ecr get-login-password --region us-east-1 |docker login --username AWS --password-stdin 12345.dkr.ecr.us-east-1.amazonaws.com/ping
 # docker push 12345.dkr.ecr.us-east-1.amazonaws.com/composer:latest
 
 # Download base image ubuntu 20.04
