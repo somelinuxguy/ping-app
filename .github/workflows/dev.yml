@@ -39,7 +39,16 @@ jobs:
           aws-secret-access-key: ${{ steps.secrets.outputs.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-# Run Tests Here
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies and packages
+        run: npm install
+
+      - name: Run tests
+        run: npm test
 
       - name: Login to Amazon ECR
         id: login-ecr
