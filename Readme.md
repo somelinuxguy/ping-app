@@ -57,8 +57,10 @@ zombie@rlyeh ping-app % fg
 
 There are two.
 
-### / 
+/ 
+
 The unqualified or "base" endpoint that returns only a quote and a timestamp.
 
-### /info
-This path will hand you back some interesting information about the host we are running on. This is very handy if you are learning Kubernetes and would like to deploy this to many different pods, on many different nodes, then load balance them. You never which pod you end up speaking to, but you can see them change from the output! So neat!
+/info
+
+This path will hand you back some interesting information about the host we are running on. This is very handy if you are learning Kubernetes and would like to deploy this to many different pods, on many different nodes, then load balance them. You never know for sure which pod you end up speaking to, but you can see them change from the output! So neat!
