@@ -16,8 +16,8 @@ RUN apt-get update \
 COPY . /opt/api/
 RUN npm install
 
-
 # Expose ports because reasons.
-# Reminder - K8s overrides this.
+# Reminder - K8s overrides this section, so these
+# are laregely here for easy local dev work.
 EXPOSE 9001
 CMD [ "npm", "start" ]
