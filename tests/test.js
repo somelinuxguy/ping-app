@@ -19,7 +19,7 @@ describe('loading express...', function () {
     .end((err, res) => {
       expect(res).to.have.status(200);
       expect(res.body).to.be.an('array'); // Check if the response is an array
-      expect(res.body[0]).to.have.property('timestamp'); // Check for the "timestamp" key
+      expect(res.body[0]).to.have.property('timestump'); // Check for the "timestamp" key
       done();  
     });
   });
