@@ -62,3 +62,54 @@ jobs:
         run: |
           docker build -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.TAG }} -t ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest .
           docker image push --all-tags ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    needs: [ build-and-push ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v2
+        with:
+          method: jwt
+          path: ${{ vars.VAULT_AUTH_PATH }}
+          url: ${{ vars.VAULT_ADDR }}
+          namespace: ${{ vars.VAULT_NAMESPACE }}
+          role: ${{ vars.VAULT_ROLE }}
+          secrets: |
+            ping/data/dev AWS_ACCESS_KEY_ID     | AWS_ACCESS_KEY_ID ;
+            ping/data/dev AWS_SECRET_ACCESS_KEY | AWS_SECRET_ACCESS_KEY ;
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ steps.secrets.outputs.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ steps.secrets.outputs.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Generate a kubeconfig
+        run: aws eks update-kubeconfig --region us-east-1 --name sect
+
+      - name: Install Kubectl
+        run: |
+             curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+             sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+             kubectl version --client
+
+      - name: Deploy
+        id: deploy
+        continue-on-error: true
+        env:
+          REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          REPOSITORY: ping
+          TAG: ${{github.sha}}
+        run: kubectl set image deployments/ping-app ping-app=${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.TAG }} -n ping-app
