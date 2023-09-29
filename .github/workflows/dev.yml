@@ -97,7 +97,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Generate a kubeconfig
-        run: aws eks update-kubeconfig --region us-east-1 --name sect
+        run: aws eks update-kubeconfig --region us-east-1 --name sect-dev
 
       - name: Install Kubectl
         run: |
