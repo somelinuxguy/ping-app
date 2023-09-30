@@ -1,13 +1,7 @@
 const os = require('os'); 
 let hostName = os.hostname();
 let hostNet = os.networkInterfaces();
-let timeStamp = time = Math.floor(Date.now()/1000)
 
-const serverBasic = [{
-    message : 'Automate all the things!',
-    timestamp : timeStamp
-    },
-];
 
 const serverInfo = [{
     hostname : hostName,
@@ -20,6 +14,11 @@ const router = app => {
 
     app.get('/', (request, response) => {
         console.log(`URL: ${request.url}`);
+        const timeStamp = Math.floor(Date.now()/1000)
+        const serverBasic = [{
+            message : 'Automate all the things!',
+            timestamp : timeStamp
+            }];
         response.send(serverBasic);
     });
 
