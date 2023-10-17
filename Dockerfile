@@ -5,14 +5,17 @@
 # docker push 639338366904.dkr.ecr.us-east-1.amazonaws.com/ping:latest
 
 # Download base image ubuntu 20.04
-FROM ubuntu:20.04
+#FROM ubuntu:20.04
+FROM alpine:3
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Update Software repository
 WORKDIR /opt/api
-RUN apt-get update \
-&& apt-get install -y nodejs npm git \
-&& rm -rf /var/lib/apt/lists/*
+RUN apk update \
+  && apk add --no-cache nodejs npm git
+#RUN apt-get update \
+#&& apt-get install -y nodejs npm git \
+#&& rm -rf /var/lib/apt/lists/*
 COPY . /opt/api/
 
 # EXPOSE and CMD
